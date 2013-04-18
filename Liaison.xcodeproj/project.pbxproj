@@ -16,6 +16,15 @@
 		079D31CC171FBAB9006BB70D /* libLiaison.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 079D31B3171FBAB9006BB70D /* libLiaison.a */; };
 		079D31D2171FBAB9006BB70D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 079D31D0171FBAB9006BB70D /* InfoPlist.strings */; };
 		079D31D5171FBAB9006BB70D /* LiaisonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31D4171FBAB9006BB70D /* LiaisonTests.m */; };
+		079D31DF171FBB62006BB70D /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 079D31DE171FBB62006BB70D /* CoreData.framework */; };
+		079D31E4171FBC3F006BB70D /* LiaisonEntityDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31E3171FBC3F006BB70D /* LiaisonEntityDescription.m */; };
+		079D31E5171FBC3F006BB70D /* LiaisonEntityDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31E3171FBC3F006BB70D /* LiaisonEntityDescription.m */; };
+		079D31E8171FBCD7006BB70D /* LiaisonJSONOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31E7171FBCD7006BB70D /* LiaisonJSONOperation.m */; };
+		079D31E9171FBCD7006BB70D /* LiaisonJSONOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31E7171FBCD7006BB70D /* LiaisonJSONOperation.m */; };
+		079D31ED171FBD35006BB70D /* LiaisonJSONOperation+Sanitization.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31EC171FBD35006BB70D /* LiaisonJSONOperation+Sanitization.m */; };
+		079D31EE171FBD35006BB70D /* LiaisonJSONOperation+Sanitization.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31EC171FBD35006BB70D /* LiaisonJSONOperation+Sanitization.m */; };
+		079D31F2171FBDE3006BB70D /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31F1171FBDE3006BB70D /* ISO8601DateFormatter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		079D31F3171FBDE3006BB70D /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31F1171FBDE3006BB70D /* ISO8601DateFormatter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +63,15 @@
 		079D31D1171FBAB9006BB70D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		079D31D3171FBAB9006BB70D /* LiaisonTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiaisonTests.h; sourceTree = "<group>"; };
 		079D31D4171FBAB9006BB70D /* LiaisonTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiaisonTests.m; sourceTree = "<group>"; };
+		079D31DE171FBB62006BB70D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		079D31E2171FBC3F006BB70D /* LiaisonEntityDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiaisonEntityDescription.h; sourceTree = "<group>"; };
+		079D31E3171FBC3F006BB70D /* LiaisonEntityDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiaisonEntityDescription.m; sourceTree = "<group>"; };
+		079D31E6171FBCD7006BB70D /* LiaisonJSONOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiaisonJSONOperation.h; sourceTree = "<group>"; };
+		079D31E7171FBCD7006BB70D /* LiaisonJSONOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiaisonJSONOperation.m; sourceTree = "<group>"; };
+		079D31EB171FBD35006BB70D /* LiaisonJSONOperation+Sanitization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LiaisonJSONOperation+Sanitization.h"; sourceTree = "<group>"; };
+		079D31EC171FBD35006BB70D /* LiaisonJSONOperation+Sanitization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LiaisonJSONOperation+Sanitization.m"; sourceTree = "<group>"; };
+		079D31F0171FBDE3006BB70D /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ISO8601DateFormatter.h; path = Vendor/ISO8601DateFormatter/ISO8601DateFormatter.h; sourceTree = "<group>"; };
+		079D31F1171FBDE3006BB70D /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ISO8601DateFormatter.m; path = Vendor/ISO8601DateFormatter/ISO8601DateFormatter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				079D31DF171FBB62006BB70D /* CoreData.framework in Frameworks */,
 				079D31B7171FBAB9006BB70D /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -84,6 +103,7 @@
 			children = (
 				079D31B8171FBAB9006BB70D /* Liaison */,
 				079D31CD171FBAB9006BB70D /* LiaisonTests */,
+				079D31EF171FBDCE006BB70D /* Vendor */,
 				079D31B5171FBAB9006BB70D /* Frameworks */,
 				079D31B4171FBAB9006BB70D /* Products */,
 			);
@@ -101,6 +121,7 @@
 		079D31B5171FBAB9006BB70D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				079D31DE171FBB62006BB70D /* CoreData.framework */,
 				079D31B6171FBAB9006BB70D /* Foundation.framework */,
 				079D31C5171FBAB9006BB70D /* SenTestingKit.framework */,
 				079D31C7171FBAB9006BB70D /* UIKit.framework */,
@@ -111,8 +132,13 @@
 		079D31B8171FBAB9006BB70D /* Liaison */ = {
 			isa = PBXGroup;
 			children = (
+				079D31EA171FBD25006BB70D /* Categories */,
 				079D31BB171FBAB9006BB70D /* Liaison.h */,
 				079D31BD171FBAB9006BB70D /* Liaison.m */,
+				079D31E2171FBC3F006BB70D /* LiaisonEntityDescription.h */,
+				079D31E3171FBC3F006BB70D /* LiaisonEntityDescription.m */,
+				079D31E6171FBCD7006BB70D /* LiaisonJSONOperation.h */,
+				079D31E7171FBCD7006BB70D /* LiaisonJSONOperation.m */,
 				079D31B9171FBAB9006BB70D /* Supporting Files */,
 			);
 			path = Liaison;
@@ -143,6 +169,32 @@
 				079D31D0171FBAB9006BB70D /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		079D31EA171FBD25006BB70D /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				079D31EB171FBD35006BB70D /* LiaisonJSONOperation+Sanitization.h */,
+				079D31EC171FBD35006BB70D /* LiaisonJSONOperation+Sanitization.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
+		079D31EF171FBDCE006BB70D /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				079D31F4171FBDE7006BB70D /* ISO8601DateFormatter */,
+			);
+			name = Vendor;
+			sourceTree = "<group>";
+		};
+		079D31F4171FBDE7006BB70D /* ISO8601DateFormatter */ = {
+			isa = PBXGroup;
+			children = (
+				079D31F0171FBDE3006BB70D /* ISO8601DateFormatter.h */,
+				079D31F1171FBDE3006BB70D /* ISO8601DateFormatter.m */,
+			);
+			name = ISO8601DateFormatter;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -244,6 +296,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				079D31BE171FBAB9006BB70D /* Liaison.m in Sources */,
+				079D31E4171FBC3F006BB70D /* LiaisonEntityDescription.m in Sources */,
+				079D31E8171FBCD7006BB70D /* LiaisonJSONOperation.m in Sources */,
+				079D31ED171FBD35006BB70D /* LiaisonJSONOperation+Sanitization.m in Sources */,
+				079D31F2171FBDE3006BB70D /* ISO8601DateFormatter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,6 +308,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				079D31D5171FBAB9006BB70D /* LiaisonTests.m in Sources */,
+				079D31E5171FBC3F006BB70D /* LiaisonEntityDescription.m in Sources */,
+				079D31E9171FBCD7006BB70D /* LiaisonJSONOperation.m in Sources */,
+				079D31EE171FBD35006BB70D /* LiaisonJSONOperation+Sanitization.m in Sources */,
+				079D31F3171FBDE3006BB70D /* ISO8601DateFormatter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,6 +463,7 @@
 				079D31DA171FBAB9006BB70D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		079D31DB171FBAB9006BB70D /* Build configuration list for PBXNativeTarget "LiaisonTests" */ = {
 			isa = XCConfigurationList;
@@ -411,6 +472,7 @@
 				079D31DD171FBAB9006BB70D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
