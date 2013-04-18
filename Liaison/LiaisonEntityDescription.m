@@ -2,7 +2,7 @@
 //  LiaisonEntityDescription.m
 //  Liaison
 //
-//  Created by Arik Devens on 4/17/13.
+//  Created by Arik Devens on 11/21/12.
 //  Copyright (c) 2013 Arik Devens. All rights reserved.
 //
 
@@ -22,7 +22,7 @@
     entityDescription.primaryKey = [entityDescription primaryKeyForEntityName];
     entityDescription.relationshipName = relationshipName;
     entityDescription.isJoinTable = NO;
-    entityDescription.block = ^(NSManagedObjectContext *localContext, NSSet *processObjects) {
+    entityDescription.postProcessingBlock = ^(NSManagedObjectContext *localContext, NSSet *processObjects) {
     };
     
     return entityDescription;

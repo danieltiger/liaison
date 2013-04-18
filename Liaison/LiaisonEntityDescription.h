@@ -2,7 +2,7 @@
 //  LiaisonEntityDescription.h
 //  Liaison
 //
-//  Created by Arik Devens on 4/17/13.
+//  Created by Arik Devens on 11/21/12.
 //  Copyright (c) 2013 Arik Devens. All rights reserved.
 //
 
@@ -14,7 +14,7 @@ typedef void(^LiaisonEntityDescriptionBlock)(NSManagedObjectContext *localContex
 
 @interface LiaisonEntityDescription : NSObject
 
-@property (strong, nonatomic) LiaisonEntityDescriptionBlock block;
+@property (strong, nonatomic) LiaisonEntityDescriptionBlock postProcessingBlock;
 @property (strong, nonatomic) NSString *entityName;
 @property (strong, nonatomic) NSString *relationshipName;
 @property (strong, nonatomic) NSString *primaryKey;

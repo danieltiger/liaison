@@ -2,7 +2,7 @@
 //  Liaison.m
 //  Liaison
 //
-//  Created by Arik Devens on 4/17/13.
+//  Created by Arik Devens on 11/21/12.
 //  Copyright (c) 2013 Arik Devens. All rights reserved.
 //
 
@@ -77,7 +77,7 @@
         NSMutableSet *processObjects = [NSMutableSet setWithSet:updatedObjects];
         [processObjects unionSet:insertedObjects];
         
-        entityDescription.block(localContext, processObjects);
+        entityDescription.postProcessingBlock(localContext, processObjects);
     } completion:completion];
 }
 
