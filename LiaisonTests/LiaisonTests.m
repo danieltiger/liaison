@@ -7,11 +7,23 @@
 //
 
 #import "LiaisonTests.h"
+#import <CoreData/CoreData.h>
+#import "Liaison.h"
 #import "LiaisonEntityDescription.h"
+#import "LiaisonJSONProcessor+Sanitization.h"
 
 
 static NSString *kAuthor = @"Author";
-static NSString *kAuthorRelationshop = @"authors";
+static NSString *kAuthorRelationship = @"authors";
+
+
+@interface LiaisonTests()
+@property (nonatomic) NSPersistentStoreCoordinator *coord;
+@property (nonatomic) NSManagedObjectContext *context;
+@property (nonatomic) NSManagedObjectModel *model;
+@property (nonatomic) NSPersistentStore *store;
+@property (nonatomic) Liaison *liaison;
+@end
 
 
 @implementation LiaisonTests
@@ -20,12 +32,46 @@ static NSString *kAuthorRelationshop = @"authors";
 {
     [super setUp];
     
-    // Set-up code here.
+    NSBundle *testBundle = [NSBundle bundleForClass:[LiaisonTests class]];
+    NSString *modelURL = [testBundle pathForResource:@"LiaisonTestModel"
+                                          ofType:@"momd"];
+    NSURL *storeURL = [[testBundle resourceURL] URLByAppendingPathComponent:@"BrokerTests.sqlite"];
+    
+    self.model = [[NSManagedObjectModel alloc] initWithContentsOfURL:[NSURL URLWithString:modelURL]];
+    
+    STAssertNotNil(self.model, @"Managed Object Model should exist");
+    
+    self.coord = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.model];
+    
+    NSError *error = nil;
+    self.store = [self.coord addPersistentStoreWithType:NSSQLiteStoreType
+                                          configuration:nil
+                                                    URL:storeURL
+                                                options:nil
+                                                  error:&error];
+    
+    self.context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    [self.context setPersistentStoreCoordinator:self.coord];
+    
+    self.liaison = [[Liaison alloc] init];
 }
+
 
 - (void)tearDown
 {
-    // Tear-down code here.
+    self.context = nil;
+    
+    NSError *error = nil;
+    STAssertTrue([self.coord removePersistentStore:self.store error:&error],
+                 @"Couldn't remove persistent store: %@", error);
+    
+    NSBundle *testBundle = [NSBundle bundleForClass:[LiaisonTests class]];
+    NSURL *storeURL = [[testBundle resourceURL] URLByAppendingPathComponent:@"BrokerTests.sqlite"];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if (storeURL) {
+        [fileManager removeItemAtURL:storeURL error:NULL];
+    }
     
     [super tearDown];
 }
@@ -36,12 +82,12 @@ static NSString *kAuthorRelationshop = @"authors";
 - (void)testEntityDescription
 {
     LiaisonEntityDescription *desc = [LiaisonEntityDescription descriptionForEntityName:kAuthor
-                                                                        andRelationship:kAuthorRelationshop];
+                                                                        andRelationship:kAuthorRelationship];
     
     STAssertNotNil(desc, @"Should have built an entity description.");
     STAssertEqualObjects(desc.entityName, kAuthor, @"Entity name should have been set.");
     STAssertEqualObjects(desc.primaryKey, @"author_id", @"Primary key should be correctly inferred.");
-    STAssertEqualObjects(desc.relationshipName, kAuthorRelationshop, @"Relationship should have been correctly set.");
+    STAssertEqualObjects(desc.relationshipName, kAuthorRelationship, @"Relationship should have been correctly set.");
     STAssertFalse(desc.isJoinTable, @"Should not be a join table");
 }
 
@@ -49,7 +95,7 @@ static NSString *kAuthorRelationshop = @"authors";
 - (void)testDateProperties
 {
     LiaisonEntityDescription *desc = [LiaisonEntityDescription descriptionForEntityName:kAuthor
-                                                                        andRelationship:kAuthorRelationshop];
+                                                                        andRelationship:kAuthorRelationship];
     
     [desc markPropertyAsDate:@"created_at"];
     [desc markPropertyAsDate:@"updated_at"];
@@ -57,6 +103,26 @@ static NSString *kAuthorRelationshop = @"authors";
     NSArray *dateProperties = [desc propertiesMarkedAsDate];
     
     STAssertTrue(dateProperties.count == 2, @"Should have two properties marked as dates.");
+}
+
+
+#pragma mark - Santization
+
+- (void)testDateSanitization
+{
+    NSDictionary *fakeJSON = @{@"created_at": @"2013-04-17T20:58:42Z"};
+
+    LiaisonEntityDescription *desc = [LiaisonEntityDescription descriptionForEntityName:kAuthor
+                                                                        andRelationship:kAuthorRelationship];
+    [desc markPropertyAsDate:@"created_at"];
+
+    LiaisonJSONProcessor *processor = [[LiaisonJSONProcessor alloc] initWithJSONPayload:fakeJSON
+                                                                      entityDescription:desc
+                                                                              inContext:self.context];
+    NSDictionary *sanitizedJSON = [processor sanitizeJSONDictionary:fakeJSON forEntityDescription:desc];
+    
+    STAssertTrue([[sanitizedJSON objectForKey:@"created_at"] isKindOfClass:[NSDate class]],
+                 @"Should have transformed created_at string to date.");
 }
 
 @end

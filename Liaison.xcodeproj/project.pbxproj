@@ -25,6 +25,7 @@
 		079D31EE171FBD35006BB70D /* LiaisonJSONProcessor+Sanitization.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31EC171FBD35006BB70D /* LiaisonJSONProcessor+Sanitization.m */; };
 		079D31F2171FBDE3006BB70D /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31F1171FBDE3006BB70D /* ISO8601DateFormatter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		079D31F3171FBDE3006BB70D /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31F1171FBDE3006BB70D /* ISO8601DateFormatter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		07C13F951723421000704A24 /* LiaisonTestModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 07C13F931723421000704A24 /* LiaisonTestModel.xcdatamodeld */; };
 		07D287BC172327AD00B767F5 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 079D31DE171FBB62006BB70D /* CoreData.framework */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +74,7 @@
 		079D31EC171FBD35006BB70D /* LiaisonJSONProcessor+Sanitization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LiaisonJSONProcessor+Sanitization.m"; sourceTree = "<group>"; };
 		079D31F0171FBDE3006BB70D /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ISO8601DateFormatter.h; path = Vendor/ISO8601DateFormatter/ISO8601DateFormatter.h; sourceTree = "<group>"; };
 		079D31F1171FBDE3006BB70D /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ISO8601DateFormatter.m; path = Vendor/ISO8601DateFormatter/ISO8601DateFormatter.m; sourceTree = "<group>"; };
+		07C13F941723421000704A24 /* LiaisonTestModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LiaisonTestModel.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +161,7 @@
 			children = (
 				079D31D3171FBAB9006BB70D /* LiaisonTests.h */,
 				079D31D4171FBAB9006BB70D /* LiaisonTests.m */,
+				07C13F931723421000704A24 /* LiaisonTestModel.xcdatamodeld */,
 				079D31CE171FBAB9006BB70D /* Supporting Files */,
 			);
 			path = LiaisonTests;
@@ -314,6 +317,7 @@
 				079D31E9171FBCD7006BB70D /* LiaisonJSONProcessor.m in Sources */,
 				079D31EE171FBD35006BB70D /* LiaisonJSONProcessor+Sanitization.m in Sources */,
 				079D31F3171FBDE3006BB70D /* ISO8601DateFormatter.m in Sources */,
+				07C13F951723421000704A24 /* LiaisonTestModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,6 +481,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		07C13F931723421000704A24 /* LiaisonTestModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				07C13F941723421000704A24 /* LiaisonTestModel.xcdatamodel */,
+			);
+			currentVersion = 07C13F941723421000704A24 /* LiaisonTestModel.xcdatamodel */;
+			path = LiaisonTestModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 079D31AB171FBAB9006BB70D /* Project object */;
 }
