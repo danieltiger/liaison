@@ -14,7 +14,11 @@
 
 
 static NSString *kAuthor = @"Author";
-static NSString *kAuthorRelationship = @"authors";
+static NSString *kAuthorRelationship = @"author";
+static NSString *kPublisher = @"Publisher";
+static NSString *kPublisherRelationship = @"publisher";
+static NSString *kBook = @"Book";
+static NSString *kBookRelationship = @"books";
 
 
 @interface LiaisonTests()
@@ -35,7 +39,7 @@ static NSString *kAuthorRelationship = @"authors";
     NSBundle *testBundle = [NSBundle bundleForClass:[LiaisonTests class]];
     NSString *modelURL = [testBundle pathForResource:@"LiaisonTestModel"
                                           ofType:@"momd"];
-    NSURL *storeURL = [[testBundle resourceURL] URLByAppendingPathComponent:@"BrokerTests.sqlite"];
+    NSURL *storeURL = [[testBundle resourceURL] URLByAppendingPathComponent:@"LiaisonTests.sqlite"];
     
     self.model = [[NSManagedObjectModel alloc] initWithContentsOfURL:[NSURL URLWithString:modelURL]];
     
@@ -66,7 +70,7 @@ static NSString *kAuthorRelationship = @"authors";
                  @"Couldn't remove persistent store: %@", error);
     
     NSBundle *testBundle = [NSBundle bundleForClass:[LiaisonTests class]];
-    NSURL *storeURL = [[testBundle resourceURL] URLByAppendingPathComponent:@"BrokerTests.sqlite"];
+    NSURL *storeURL = [[testBundle resourceURL] URLByAppendingPathComponent:@"LiaisonTests.sqlite"];
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if (storeURL) {
@@ -111,11 +115,11 @@ static NSString *kAuthorRelationship = @"authors";
 - (void)testDateSanitization
 {
     NSDictionary *fakeJSON = @{@"created_at": @"2013-04-17T20:58:42Z"};
-
+    
     LiaisonEntityDescription *desc = [LiaisonEntityDescription descriptionForEntityName:kAuthor
                                                                         andRelationship:kAuthorRelationship];
     [desc markPropertyAsDate:@"created_at"];
-
+    
     LiaisonJSONProcessor *processor = [[LiaisonJSONProcessor alloc] initWithJSONPayload:fakeJSON
                                                                       entityDescription:desc
                                                                               inContext:self.context];
@@ -123,6 +127,43 @@ static NSString *kAuthorRelationship = @"authors";
     
     STAssertTrue([[sanitizedJSON objectForKey:@"created_at"] isKindOfClass:[NSDate class]],
                  @"Should have transformed created_at string to date.");
+}
+
+
+- (void)testPrimaryKeySanitization
+{
+    NSDictionary *fakeJSON = @{@"id": @(1)};
+    
+    LiaisonEntityDescription *desc = [LiaisonEntityDescription descriptionForEntityName:kAuthor
+                                                                        andRelationship:kAuthorRelationship];
+    LiaisonJSONProcessor *processor = [[LiaisonJSONProcessor alloc] initWithJSONPayload:fakeJSON
+                                                                      entityDescription:desc
+                                                                              inContext:self.context];
+    
+    NSDictionary *sanitizedJSON = [processor sanitizeJSONDictionary:fakeJSON forEntityDescription:desc];
+    
+    STAssertNotNil([sanitizedJSON objectForKey:@"author_id"], @"Should have transformed primary key.");
+    STAssertEquals([sanitizedJSON objectForKey:@"author_id"], @(1), @"Should have primary key value set.");
+}
+
+
+- (void)testRelationshipsSanitization
+{
+    NSDictionary *fakeJSON = @{
+                               @"publisher_id": @(1),
+                               };
+    
+    LiaisonEntityDescription *desc = [LiaisonEntityDescription descriptionForEntityName:kAuthor
+                                                                        andRelationship:kAuthorRelationship];
+    LiaisonJSONProcessor *processor = [[LiaisonJSONProcessor alloc] initWithJSONPayload:fakeJSON
+                                                                      entityDescription:desc
+                                                                              inContext:self.context];
+    
+    NSDictionary *sanitizedJSON = [processor sanitizeJSONDictionary:fakeJSON
+                                               forEntityDescription:desc];
+    
+    STAssertNil([sanitizedJSON objectForKey:@"publisher_id"],
+                @"Should not have publisher_id as it's a relationship");
 }
 
 @end
