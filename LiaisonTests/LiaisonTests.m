@@ -159,11 +159,30 @@ static NSString *kBookRelationship = @"books";
                                                                       entityDescription:desc
                                                                               inContext:self.context];
     
-    NSDictionary *sanitizedJSON = [processor sanitizeJSONDictionary:fakeJSON
-                                               forEntityDescription:desc];
+    NSDictionary *sanitizedJSON = [processor sanitizeJSONDictionary:fakeJSON forEntityDescription:desc];
     
     STAssertNil([sanitizedJSON objectForKey:@"publisher_id"],
                 @"Should not have publisher_id as it's a relationship");
+}
+
+
+- (void)testUnimplementedKeysSanitization
+{
+    NSDictionary *fakeJSON = @{
+                               @"name": @"Raymond Carver",
+                               @"nickname": @"Old Ray"
+                               };
+    
+    LiaisonEntityDescription *desc = [LiaisonEntityDescription descriptionForEntityName:kAuthor
+                                                                        andRelationship:kAuthorRelationship];
+    LiaisonJSONProcessor *processor = [[LiaisonJSONProcessor alloc] initWithJSONPayload:fakeJSON
+                                                                      entityDescription:desc
+                                                                              inContext:self.context];
+    
+    NSDictionary *sanitizedJSON = [processor sanitizeJSONDictionary:fakeJSON forEntityDescription:desc];
+    
+    STAssertNotNil([sanitizedJSON objectForKey:@"name"], @"Name should still be present, as it's in the model.");
+    STAssertNil([sanitizedJSON objectForKey:@"nickname"], @"Nickname should not be present, as it's not in the model.");
 }
 
 @end

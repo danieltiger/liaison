@@ -3,13 +3,14 @@
     <entity name="Author" syncable="YES">
         <attribute name="author_id" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="created_at" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="publisher" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Publisher" inverseName="author" inverseEntity="Publisher" syncable="YES"/>
     </entity>
     <entity name="Publisher" syncable="YES">
         <relationship name="author" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Author" inverseName="publisher" inverseEntity="Author" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Author" positionX="27" positionY="47" width="128" height="88"/>
+        <element name="Author" positionX="27" positionY="47" width="128" height="103"/>
         <element name="Publisher" positionX="340" positionY="-0" width="128" height="58"/>
     </elements>
 </model>
