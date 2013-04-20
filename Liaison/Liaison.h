@@ -12,6 +12,7 @@
 
 @interface Liaison : NSObject
 
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (void)saveDataInBackgroundWithContext:(void(^)(NSManagedObjectContext *))saveBlock
                              completion:(void(^)(void))completion;
 - (void)processJSONPayload:(id)payload

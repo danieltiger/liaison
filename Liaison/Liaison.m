@@ -20,13 +20,12 @@
 
 #pragma mark - Designated Initializer
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     self = [super init];
     
     if (self != nil) {
         self.mainContext = managedObjectContext;
-
         self.saveContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];;
         self.saveContext.parentContext = self.mainContext;
         [self.saveContext setUndoManager:nil];
