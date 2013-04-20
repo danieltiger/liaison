@@ -98,6 +98,16 @@ static NSString *kAuthorBookRelationship = @"books";
 }
 
 
+- (void)testPrimaryKey
+{
+    LiaisonEntityDescription *desc = [LiaisonEntityDescription descriptionForEntityName:kAuthorBook
+                                                                        andRelationship:kAuthorBookRelationship];
+    
+    STAssertEqualObjects(desc.primaryKey, @"author_book_id", @"Primary key should handle camel case correctly.");
+
+}
+
+
 - (void)testDateProperties
 {
     LiaisonEntityDescription *desc = [LiaisonEntityDescription descriptionForEntityName:kAuthor
