@@ -19,12 +19,13 @@
 		079D31DF171FBB62006BB70D /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 079D31DE171FBB62006BB70D /* CoreData.framework */; };
 		079D31E4171FBC3F006BB70D /* LiaisonEntityDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31E3171FBC3F006BB70D /* LiaisonEntityDescription.m */; };
 		079D31E5171FBC3F006BB70D /* LiaisonEntityDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31E3171FBC3F006BB70D /* LiaisonEntityDescription.m */; };
-		079D31E8171FBCD7006BB70D /* LiaisonJSONOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31E7171FBCD7006BB70D /* LiaisonJSONOperation.m */; };
-		079D31E9171FBCD7006BB70D /* LiaisonJSONOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31E7171FBCD7006BB70D /* LiaisonJSONOperation.m */; };
-		079D31ED171FBD35006BB70D /* LiaisonJSONOperation+Sanitization.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31EC171FBD35006BB70D /* LiaisonJSONOperation+Sanitization.m */; };
-		079D31EE171FBD35006BB70D /* LiaisonJSONOperation+Sanitization.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31EC171FBD35006BB70D /* LiaisonJSONOperation+Sanitization.m */; };
+		079D31E8171FBCD7006BB70D /* LiaisonJSONProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31E7171FBCD7006BB70D /* LiaisonJSONProcessor.m */; };
+		079D31E9171FBCD7006BB70D /* LiaisonJSONProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31E7171FBCD7006BB70D /* LiaisonJSONProcessor.m */; };
+		079D31ED171FBD35006BB70D /* LiaisonJSONProcessor+Sanitization.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31EC171FBD35006BB70D /* LiaisonJSONProcessor+Sanitization.m */; };
+		079D31EE171FBD35006BB70D /* LiaisonJSONProcessor+Sanitization.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31EC171FBD35006BB70D /* LiaisonJSONProcessor+Sanitization.m */; };
 		079D31F2171FBDE3006BB70D /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31F1171FBDE3006BB70D /* ISO8601DateFormatter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		079D31F3171FBDE3006BB70D /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31F1171FBDE3006BB70D /* ISO8601DateFormatter.m */; };
+		079D31F3171FBDE3006BB70D /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 079D31F1171FBDE3006BB70D /* ISO8601DateFormatter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		07D287BC172327AD00B767F5 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 079D31DE171FBB62006BB70D /* CoreData.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,10 +67,10 @@
 		079D31DE171FBB62006BB70D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		079D31E2171FBC3F006BB70D /* LiaisonEntityDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiaisonEntityDescription.h; sourceTree = "<group>"; };
 		079D31E3171FBC3F006BB70D /* LiaisonEntityDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiaisonEntityDescription.m; sourceTree = "<group>"; };
-		079D31E6171FBCD7006BB70D /* LiaisonJSONOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiaisonJSONOperation.h; sourceTree = "<group>"; };
-		079D31E7171FBCD7006BB70D /* LiaisonJSONOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiaisonJSONOperation.m; sourceTree = "<group>"; };
-		079D31EB171FBD35006BB70D /* LiaisonJSONOperation+Sanitization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LiaisonJSONOperation+Sanitization.h"; sourceTree = "<group>"; };
-		079D31EC171FBD35006BB70D /* LiaisonJSONOperation+Sanitization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LiaisonJSONOperation+Sanitization.m"; sourceTree = "<group>"; };
+		079D31E6171FBCD7006BB70D /* LiaisonJSONProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiaisonJSONProcessor.h; sourceTree = "<group>"; };
+		079D31E7171FBCD7006BB70D /* LiaisonJSONProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiaisonJSONProcessor.m; sourceTree = "<group>"; };
+		079D31EB171FBD35006BB70D /* LiaisonJSONProcessor+Sanitization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LiaisonJSONProcessor+Sanitization.h"; sourceTree = "<group>"; };
+		079D31EC171FBD35006BB70D /* LiaisonJSONProcessor+Sanitization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LiaisonJSONProcessor+Sanitization.m"; sourceTree = "<group>"; };
 		079D31F0171FBDE3006BB70D /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ISO8601DateFormatter.h; path = Vendor/ISO8601DateFormatter/ISO8601DateFormatter.h; sourceTree = "<group>"; };
 		079D31F1171FBDE3006BB70D /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ISO8601DateFormatter.m; path = Vendor/ISO8601DateFormatter/ISO8601DateFormatter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -88,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07D287BC172327AD00B767F5 /* CoreData.framework in Frameworks */,
 				079D31C6171FBAB9006BB70D /* SenTestingKit.framework in Frameworks */,
 				079D31C8171FBAB9006BB70D /* UIKit.framework in Frameworks */,
 				079D31C9171FBAB9006BB70D /* Foundation.framework in Frameworks */,
@@ -137,8 +139,8 @@
 				079D31BD171FBAB9006BB70D /* Liaison.m */,
 				079D31E2171FBC3F006BB70D /* LiaisonEntityDescription.h */,
 				079D31E3171FBC3F006BB70D /* LiaisonEntityDescription.m */,
-				079D31E6171FBCD7006BB70D /* LiaisonJSONOperation.h */,
-				079D31E7171FBCD7006BB70D /* LiaisonJSONOperation.m */,
+				079D31E6171FBCD7006BB70D /* LiaisonJSONProcessor.h */,
+				079D31E7171FBCD7006BB70D /* LiaisonJSONProcessor.m */,
 				079D31B9171FBAB9006BB70D /* Supporting Files */,
 			);
 			path = Liaison;
@@ -174,8 +176,8 @@
 		079D31EA171FBD25006BB70D /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				079D31EB171FBD35006BB70D /* LiaisonJSONOperation+Sanitization.h */,
-				079D31EC171FBD35006BB70D /* LiaisonJSONOperation+Sanitization.m */,
+				079D31EB171FBD35006BB70D /* LiaisonJSONProcessor+Sanitization.h */,
+				079D31EC171FBD35006BB70D /* LiaisonJSONProcessor+Sanitization.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -297,8 +299,8 @@
 			files = (
 				079D31BE171FBAB9006BB70D /* Liaison.m in Sources */,
 				079D31E4171FBC3F006BB70D /* LiaisonEntityDescription.m in Sources */,
-				079D31E8171FBCD7006BB70D /* LiaisonJSONOperation.m in Sources */,
-				079D31ED171FBD35006BB70D /* LiaisonJSONOperation+Sanitization.m in Sources */,
+				079D31E8171FBCD7006BB70D /* LiaisonJSONProcessor.m in Sources */,
+				079D31ED171FBD35006BB70D /* LiaisonJSONProcessor+Sanitization.m in Sources */,
 				079D31F2171FBDE3006BB70D /* ISO8601DateFormatter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -309,8 +311,8 @@
 			files = (
 				079D31D5171FBAB9006BB70D /* LiaisonTests.m in Sources */,
 				079D31E5171FBC3F006BB70D /* LiaisonEntityDescription.m in Sources */,
-				079D31E9171FBCD7006BB70D /* LiaisonJSONOperation.m in Sources */,
-				079D31EE171FBD35006BB70D /* LiaisonJSONOperation+Sanitization.m in Sources */,
+				079D31E9171FBCD7006BB70D /* LiaisonJSONProcessor.m in Sources */,
+				079D31EE171FBD35006BB70D /* LiaisonJSONProcessor+Sanitization.m in Sources */,
 				079D31F3171FBDE3006BB70D /* ISO8601DateFormatter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

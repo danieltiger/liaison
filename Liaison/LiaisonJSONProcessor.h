@@ -1,5 +1,5 @@
 //
-//  LiaisonJSONOperation.h
+//  LiaisonJSONProcessor.h
 //  Liaison
 //
 //  Created by Arik Devens on 11/21/12.
@@ -10,7 +10,7 @@
 #import "LiaisonEntityDescription.h"
 
 
-@interface LiaisonJSONOperation : NSObject
+@interface LiaisonJSONProcessor : NSObject
 
 @property (nonatomic) NSManagedObjectContext *context;
 

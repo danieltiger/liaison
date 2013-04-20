@@ -9,6 +9,11 @@
 #import "LiaisonEntityDescription.h"
 
 
+@interface LiaisonEntityDescription()
+@property (nonatomic) NSMutableArray *dateProperties;
+@end
+
+
 @implementation LiaisonEntityDescription
 
 #pragma mark - Designated Initializer
@@ -25,7 +30,23 @@
     entityDescription.postProcessingBlock = ^(NSManagedObjectContext *localContext, NSSet *processObjects) {
     };
     
+    entityDescription.dateProperties = [NSMutableArray array];
+    
     return entityDescription;
+}
+
+
+#pragma mark - API
+
+- (void)markPropertyAsDate:(NSString *)propertyName
+{
+    [self.dateProperties addObject:propertyName];
+}
+
+
+- (NSArray *)propertiesMarkedAsDate
+{
+    return self.dateProperties;
 }
 
 

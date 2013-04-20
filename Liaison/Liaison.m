@@ -7,7 +7,7 @@
 //
 
 #import "Liaison.h"
-#import "LiaisonJSONOperation.h"
+#import "LiaisonJSONProcessor.h"
 
 
 @interface Liaison()
@@ -59,14 +59,16 @@
      withEntityDescription:(LiaisonEntityDescription *)entityDescription
                 completion:(void(^)(void))completion
 {
-    if (![payload isKindOfClass:[NSArray class]]) {
-        DLog(@"Payload must be an array. Bailing.");
+    if ([payload isKindOfClass:[NSDictionary class]] == YES) {
+        NSArray *payloadWrapper = @[payload];
         
-        return;
+        payload = payloadWrapper;
     }
     
+    NSAssert([payload isKindOfClass:[NSArray class]], @"Payload must be an NSArray.");
+    
     [self saveDataInBackgroundWithContext:^(NSManagedObjectContext *localContext) {
-        LiaisonJSONOperation *JSONOperation = [[LiaisonJSONOperation alloc] initWithJSONPayload:payload
+        LiaisonJSONProcessor *JSONOperation = [[LiaisonJSONProcessor alloc] initWithJSONPayload:payload
                                                                               entityDescription:entityDescription
                                                                                       inContext:localContext];
         [JSONOperation processPayload];

@@ -1,15 +1,15 @@
 //
-//  LiaisonJSONOperation+Sanitization.h
+//  LiaisonJSONProcessor+Sanitization.h
 //  Liaison
 //
 //  Created by Arik Devens on 11/21/12.
 //  Copyright (c) 2013 Arik Devens. All rights reserved.
 //
 
-#import "LiaisonJSONOperation.h"
+#import "LiaisonJSONProcessor.h"
 
 
-@interface LiaisonJSONOperation (Sanitization)
+@interface LiaisonJSONProcessor (Sanitization)
 
 - (NSDictionary *)sanitizeJSONDictionary:(NSDictionary *)jsonDictionary
                     forEntityDescription:(LiaisonEntityDescription *)entityDescription;

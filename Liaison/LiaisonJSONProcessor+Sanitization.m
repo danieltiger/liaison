@@ -1,21 +1,21 @@
 //
-//  LiaisonJSONOperation+Sanitization.m
+//  LiaisonJSONProcessor+Sanitization.m
 //  Liaison
 //
 //  Created by Arik Devens on 11/21/12.
 //  Copyright (c) 2013 Arik Devens. All rights reserved.
 //
 
-#import "LiaisonJSONOperation+Sanitization.h"
+#import "LiaisonJSONProcessor+Sanitization.h"
 #import "ISO8601DateFormatter.h"
 
 
-@implementation LiaisonJSONOperation (Sanitization)
+@implementation LiaisonJSONProcessor (Sanitization)
 
 - (NSDictionary *)sanitizeJSONDictionary:(NSDictionary *)jsonDictionary
                     forEntityDescription:(LiaisonEntityDescription *)entityDescription
 {
-    jsonDictionary = [self sanitizeTimestampsForJSONDictionary:jsonDictionary];
+    jsonDictionary = [self sanitizeTimestampsForJSONDictionary:jsonDictionary withEntityDescription:entityDescription];
     jsonDictionary = [self sanitizePrimaryKeyForJSONDictionary:jsonDictionary withEntityDescription:entityDescription];
     jsonDictionary = [self sanitizeRelationshipsForJSONDictionary:jsonDictionary withEntityDescription:entityDescription];
     jsonDictionary = [self sanitizeSubDictionariesForJSONDictionary:jsonDictionary withEntityDescription:entityDescription];
@@ -66,27 +66,19 @@
 
 
 - (NSDictionary *)sanitizeTimestampsForJSONDictionary:(NSDictionary *)jsonDictionary
+                                withEntityDescription:(LiaisonEntityDescription *)entityDescription
 {
     NSMutableDictionary *sanitizedDictionary = [NSMutableDictionary dictionaryWithDictionary:jsonDictionary];
     
-    NSString *createdAt = [sanitizedDictionary objectForKey:@"created_at"];
-    NSString *updatedAt = [sanitizedDictionary objectForKey:@"updated_at"];
-    NSString *date = [sanitizedDictionary objectForKey:@"date"];
-    
     ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
+    NSArray *dateProperties = [entityDescription propertiesMarkedAsDate];
     
-    if (createdAt.length > 0) {
-        [sanitizedDictionary setValue:[dateFormatter dateFromString:createdAt] forKey:@"created_at"];
+    for (NSString *property in dateProperties) {
+        NSString *date = [sanitizedDictionary objectForKey:property];
+        
+        if (date.length > 0) [sanitizedDictionary setValue:[dateFormatter dateFromString:date] forKey:property];
     }
-    
-    if (updatedAt.length > 0) {
-        [sanitizedDictionary setValue:[dateFormatter dateFromString:updatedAt] forKey:@"updated_at"];
-    }
-    
-    if (date.length > 0) {
-        [sanitizedDictionary setValue:[dateFormatter dateFromString:date] forKey:@"date"];
-    }
-    
+
     return sanitizedDictionary;
 }
 

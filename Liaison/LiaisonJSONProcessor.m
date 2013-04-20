@@ -1,22 +1,22 @@
 //
-//  LiaisonJSONOperation.m
+//  LiaisonJSONProcessor.m
 //  Liaison
 //
 //  Created by Arik Devens on 11/21/12.
 //  Copyright (c) 2013 Arik Devens. All rights reserved.
 //
 
-#import "LiaisonJSONOperation.h"
-#import "LiaisonJSONOperation+Sanitization.h"
+#import "LiaisonJSONProcessor.h"
+#import "LiaisonJSONProcessor+Sanitization.h"
 
 
-@interface LiaisonJSONOperation()
+@interface LiaisonJSONProcessor()
 @property (nonatomic) id payload;
 @property (nonatomic) LiaisonEntityDescription *entityDescription;
 @end
 
 
-@implementation LiaisonJSONOperation
+@implementation LiaisonJSONProcessor
 
 #pragma mark - Designated Intializer
 
