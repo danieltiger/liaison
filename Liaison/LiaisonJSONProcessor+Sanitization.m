@@ -18,7 +18,7 @@
     jsonDictionary = [self sanitizeTimestampsForJSONDictionary:jsonDictionary withEntityDescription:entityDescription];
     jsonDictionary = [self sanitizePrimaryKeyForJSONDictionary:jsonDictionary withEntityDescription:entityDescription];
     jsonDictionary = [self sanitizeRelationshipsForJSONDictionary:jsonDictionary withEntityDescription:entityDescription];
-    jsonDictionary = [self sanitizeSubDictionariesForJSONDictionary:jsonDictionary withEntityDescription:entityDescription];
+//    jsonDictionary = [self sanitizeSubDictionariesForJSONDictionary:jsonDictionary withEntityDescription:entityDescription];
     jsonDictionary = [self sanitizeUnimplementedKeysForJSONDictionary:jsonDictionary withEntityDescription:entityDescription];
     
     return jsonDictionary;
@@ -108,29 +108,32 @@
 }
 
 
-- (NSDictionary *)sanitizeSubDictionariesForJSONDictionary:(NSDictionary *)jsonDictionary
-                                     withEntityDescription:(LiaisonEntityDescription *)entityDescription
-{
-    NSMutableDictionary *sanitizedDictionary = [NSMutableDictionary dictionaryWithDictionary:jsonDictionary];
-    
-    for (id property in jsonDictionary) {
-        id value = [jsonDictionary valueForKey:property];
-        
-        if ([value isKindOfClass:[NSDictionary class]]) {
-            for (id subKey in value) {
-                NSString *newKey = [NSString stringWithFormat:@"%@_%@", property, subKey];
-                id subValue = [value objectForKey:subKey];
-                
-                [sanitizedDictionary setValue:subValue forKey:newKey];
-            }
-            
-            
-            [sanitizedDictionary removeObjectForKey:property];
-        }
-    }
-    
-    return sanitizedDictionary;
-}
+//- (NSDictionary *)sanitizeSubDictionariesForJSONDictionary:(NSDictionary *)jsonDictionary
+//                                     withEntityDescription:(LiaisonEntityDescription *)entityDescription
+//{
+//    NSMutableDictionary *sanitizedDictionary = [NSMutableDictionary dictionaryWithDictionary:jsonDictionary];
+//    
+//    for (id property in jsonDictionary) {
+//        id value = [jsonDictionary valueForKey:property];
+//        
+//        if ([value isKindOfClass:[NSDictionary class]]) {
+////            for (id subKey in value) {
+////                NSString *newKey = [NSString stringWithFormat:@"%@_%@", property, subKey];
+////                id subValue = [value objectForKey:subKey];
+////                
+////                [sanitizedDictionary setValue:subValue forKey:newKey];
+////            }
+////            
+////            
+////            [sanitizedDictionary removeObjectForKey:property];
+//            
+//            sanitizedDictionary = [self sanitizeJSONDictionary:jsonDictionary
+//                                          forEntityDescription:<#(LiaisonEntityDescription *)#>]
+//        }
+//    }
+//    
+//    return sanitizedDictionary;
+//}
 
 
 - (NSDictionary *)sanitizeUnimplementedKeysForJSONDictionary:(NSDictionary *)jsonDictionary

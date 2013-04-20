@@ -19,6 +19,8 @@ static NSString *kPublisher = @"Publisher";
 static NSString *kPublisherRelationship = @"publisher";
 static NSString *kBook = @"Book";
 static NSString *kBookRelationship = @"books";
+static NSString *kAuthorBook = @"AuthorBook";
+static NSString *kAuthorBookRelationship = @"books";
 
 
 @interface LiaisonTests()
@@ -183,6 +185,30 @@ static NSString *kBookRelationship = @"books";
     
     STAssertNotNil([sanitizedJSON objectForKey:@"name"], @"Name should still be present, as it's in the model.");
     STAssertNil([sanitizedJSON objectForKey:@"nickname"], @"Nickname should not be present, as it's not in the model.");
+}
+
+
+- (void)testJoinTableSanitization
+{
+    NSDictionary *fakeJSON = @{
+                               @"author_id": @(1),
+                               @"book_id": @(1),
+                               @"created_at": @"2013-04-17T20:58:42Z"};
+    
+    LiaisonEntityDescription *desc = [LiaisonEntityDescription descriptionForEntityName:kAuthorBook
+                                                                        andRelationship:kAuthorBookRelationship];
+    desc.isJoinTable = YES;
+    
+    LiaisonJSONProcessor *processor = [[LiaisonJSONProcessor alloc] initWithJSONPayload:fakeJSON
+                                                                      entityDescription:desc
+                                                                              inContext:self.context];
+    
+    NSDictionary *sanitizedJSON = [processor sanitizeJSONDictionaryForJoinTable:fakeJSON
+                                                          withEntityDescription:desc];
+    
+    STAssertNotNil([sanitizedJSON objectForKey:@"author_id"], @"author_id should still be present, as it's a relationship.");
+    STAssertNotNil([sanitizedJSON objectForKey:@"book_id"], @"book_id should still be present, as it's a relationship.");
+    STAssertNil([sanitizedJSON objectForKey:@"created_at"], @"created_at should not be present, as it's not a relationship.");
 }
 
 @end
