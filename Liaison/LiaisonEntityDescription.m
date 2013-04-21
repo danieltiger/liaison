@@ -11,6 +11,7 @@
 
 @interface LiaisonEntityDescription()
 @property (nonatomic) NSMutableArray *dateProperties;
+@property (nonatomic) NSMutableDictionary *nestedEntityDescriptions;
 @end
 
 
@@ -31,6 +32,7 @@
     };
     
     entityDescription.dateProperties = [NSMutableArray array];
+    entityDescription.nestedEntityDescriptions = [NSMutableDictionary dictionary];
     
     return entityDescription;
 }
@@ -47,6 +49,18 @@
 - (NSArray *)propertiesMarkedAsDate
 {
     return self.dateProperties;
+}
+
+
+- (void)setEntityDescription:(LiaisonEntityDescription *)description forProperty:(NSString *)property
+{
+    [self.nestedEntityDescriptions setObject:description forKey:property];
+}
+
+
+- (LiaisonEntityDescription *)entityDescriptionForProperty:(NSString *)property
+{
+    return [self.nestedEntityDescriptions objectForKey:property];
 }
 
 

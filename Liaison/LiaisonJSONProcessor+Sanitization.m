@@ -12,25 +12,35 @@
 
 @implementation LiaisonJSONProcessor (Sanitization)
 
-- (NSDictionary *)sanitizeJSONDictionary:(NSDictionary *)jsonDictionary
-                    forEntityDescription:(LiaisonEntityDescription *)entityDescription
+- (NSDictionary *)sanitizeJSONDictionary:(NSDictionary *)dictionary
+                    forEntityDescription:(LiaisonEntityDescription *)description
 {
-    jsonDictionary = [self sanitizeTimestampsForJSONDictionary:jsonDictionary withEntityDescription:entityDescription];
-    jsonDictionary = [self sanitizePrimaryKeyForJSONDictionary:jsonDictionary withEntityDescription:entityDescription];
-    jsonDictionary = [self sanitizeRelationshipsForJSONDictionary:jsonDictionary withEntityDescription:entityDescription];
-//    jsonDictionary = [self sanitizeSubDictionariesForJSONDictionary:jsonDictionary withEntityDescription:entityDescription];
-    jsonDictionary = [self sanitizeUnimplementedKeysForJSONDictionary:jsonDictionary withEntityDescription:entityDescription];
+    NSArray *implementedKeys = [self implementedKeysForEntityDescription:description];
     
-    return jsonDictionary;
+    NSMutableDictionary *sanitizedDictionary = [NSMutableDictionary dictionaryWithDictionary:dictionary];
+    
+    [self sanitizeTimestampsForDictionary:sanitizedDictionary withEntityDescription:description];
+    [self sanitizePrimaryKeyForDictionary:sanitizedDictionary withEntityDescription:description];
+    
+    for (NSString *property in dictionary) {
+        if ([self isPropertyRelationship:property] == YES) {
+            [self sanitizeRelationship:property inDictionary:sanitizedDictionary withDescription:description];
+        }
+        
+        if ([implementedKeys containsObject:property] == NO) {
+            [sanitizedDictionary removeObjectForKey:property];
+        }
+    }
+    
+    return sanitizedDictionary;
 }
 
 
-- (NSDictionary *)sanitizeJSONDictionaryForJoinTable:(NSDictionary *)jsonDictionary
-                               withEntityDescription:(LiaisonEntityDescription *)entityDescription
+- (NSDictionary *)sanitizeJSONDictionaryForJoinTable:(NSDictionary *)dictionary
 {
-    NSMutableDictionary *sanitizedDictionary = [NSMutableDictionary dictionaryWithDictionary:jsonDictionary];
+    NSMutableDictionary *sanitizedDictionary = [NSMutableDictionary dictionaryWithDictionary:dictionary];
     
-    for (NSString *property in jsonDictionary) {
+    for (NSString *property in dictionary) {
         if ([property hasSuffix:@"_id"] == NO) {
             [sanitizedDictionary removeObjectForKey:property];
         }
@@ -50,118 +60,62 @@
 
 #pragma mark - Helpers
 
-- (NSDictionary *)sanitizePrimaryKeyForJSONDictionary:(NSDictionary *)jsonDictionary
-                                withEntityDescription:(LiaisonEntityDescription *)entityDescription
+- (void)sanitizeTimestampsForDictionary:(NSMutableDictionary *)dictionary
+                            withEntityDescription:(LiaisonEntityDescription *)description
 {
-    NSMutableDictionary *sanitizedDictionary = [NSMutableDictionary dictionaryWithDictionary:jsonDictionary];
-    NSString *value = [sanitizedDictionary objectForKey:@"id"];
-    
-    if (value) {
-        [sanitizedDictionary setValue:value forKey:entityDescription.primaryKey];
-        [sanitizedDictionary removeObjectForKey:@"id"];
-    }
-    
-    return sanitizedDictionary;
-}
-
-
-- (NSDictionary *)sanitizeTimestampsForJSONDictionary:(NSDictionary *)jsonDictionary
-                                withEntityDescription:(LiaisonEntityDescription *)entityDescription
-{
-    NSMutableDictionary *sanitizedDictionary = [NSMutableDictionary dictionaryWithDictionary:jsonDictionary];
-    
     ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
-    NSArray *dateProperties = [entityDescription propertiesMarkedAsDate];
+    NSArray *dateProperties = description.propertiesMarkedAsDate;
     
     for (NSString *property in dateProperties) {
-        NSString *date = [sanitizedDictionary objectForKey:property];
+        NSString *date = [dictionary objectForKey:property];
         
-        if (date.length > 0) [sanitizedDictionary setValue:[dateFormatter dateFromString:date] forKey:property];
+        if (date.length > 0) [dictionary setValue:[dateFormatter dateFromString:date] forKey:property];
     }
-
-    return sanitizedDictionary;
 }
 
 
-- (NSDictionary *)sanitizeRelationshipsForJSONDictionary:(NSDictionary *)jsonDictionary
-                                   withEntityDescription:(LiaisonEntityDescription *)entityDescription
+- (void)sanitizePrimaryKeyForDictionary:(NSMutableDictionary *)dictionary
+                  withEntityDescription:(LiaisonEntityDescription *)description
 {
-    NSMutableDictionary *sanitizedDictionary = [NSMutableDictionary dictionaryWithDictionary:jsonDictionary];
+    NSString *value = [dictionary objectForKey:@"id"];
     
-    for (NSString *property in jsonDictionary) {
-        if ([self isPropertyRelationship:property forEntityDescription:entityDescription]) {
-            NSString *relationshipEntityName = [self entityNameForProperty:property];
-            NSEntityDescription *description = [NSEntityDescription entityForName:entityDescription.entityName
-                                                           inManagedObjectContext:self.context];
-            NSEntityDescription *relationshipEntity = [NSEntityDescription entityForName:relationshipEntityName
-                                                                  inManagedObjectContext:self.context];
-            
-            NSArray *relationships = [description relationshipsWithDestinationEntity:relationshipEntity];
-            
-            if (relationships.count <= 0) continue;
-            
-            [sanitizedDictionary removeObjectForKey:property];
-        }
+    if (value != nil) {
+        [dictionary setValue:value forKey:description.primaryKey];
+        [dictionary removeObjectForKey:@"id"];
     }
-    
-    return sanitizedDictionary;
 }
 
 
-//- (NSDictionary *)sanitizeSubDictionariesForJSONDictionary:(NSDictionary *)jsonDictionary
-//                                     withEntityDescription:(LiaisonEntityDescription *)entityDescription
-//{
-//    NSMutableDictionary *sanitizedDictionary = [NSMutableDictionary dictionaryWithDictionary:jsonDictionary];
-//    
-//    for (id property in jsonDictionary) {
-//        id value = [jsonDictionary valueForKey:property];
-//        
-//        if ([value isKindOfClass:[NSDictionary class]]) {
-////            for (id subKey in value) {
-////                NSString *newKey = [NSString stringWithFormat:@"%@_%@", property, subKey];
-////                id subValue = [value objectForKey:subKey];
-////                
-////                [sanitizedDictionary setValue:subValue forKey:newKey];
-////            }
-////            
-////            
-////            [sanitizedDictionary removeObjectForKey:property];
-//            
-//            sanitizedDictionary = [self sanitizeJSONDictionary:jsonDictionary
-//                                          forEntityDescription:<#(LiaisonEntityDescription *)#>]
-//        }
-//    }
-//    
-//    return sanitizedDictionary;
-//}
-
-
-- (NSDictionary *)sanitizeUnimplementedKeysForJSONDictionary:(NSDictionary *)jsonDictionary
-                                       withEntityDescription:(LiaisonEntityDescription *)entityDescription
+- (void)sanitizeRelationship:(NSString *)relationship
+                inDictionary:(NSMutableDictionary *)dictionary
+             withDescription:(LiaisonEntityDescription *)description
 {
-    NSMutableDictionary *sanitizedDictionary = [NSMutableDictionary dictionaryWithDictionary:jsonDictionary];
+    NSString *relationshipEntityName = [self entityNameForProperty:relationship];
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:description.entityName
+                                                         inManagedObjectContext:self.context];
+    NSEntityDescription *relationshipEntity = [NSEntityDescription entityForName:relationshipEntityName
+                                                          inManagedObjectContext:self.context];
     
-    for (NSString *property in jsonDictionary) {
-        NSEntityDescription *description = [NSEntityDescription entityForName:entityDescription.entityName
-                                                       inManagedObjectContext:self.context];
-        
-        if ([[[description attributesByName] allKeys] containsObject:property] == YES) continue;
-        
-        [sanitizedDictionary removeObjectForKey:property];
-    }
+    NSArray *relationships = [entityDescription relationshipsWithDestinationEntity:relationshipEntity];
     
-    return sanitizedDictionary;
+    if (relationships.count <= 0) return;
+    
+    [dictionary removeObjectForKey:relationship];
 }
 
 
-- (BOOL)isPropertyRelationship:(NSString *)property forEntityDescription:(LiaisonEntityDescription *)entityDescription
+- (NSArray *)implementedKeysForEntityDescription:(LiaisonEntityDescription *)description
 {
-    BOOL isRelationship = NO;
-    
-    if ([property hasSuffix:@"_id"]) isRelationship = YES;
-    if ([property hasPrefix:[entityDescription.entityName lowercaseString]]) isRelationship = NO;
-    
-    return isRelationship;
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:description.entityName
+                                                         inManagedObjectContext:self.context];
+
+    return [[entityDescription attributesByName] allKeys];
+}
+
+
+- (BOOL)isPropertyRelationship:(NSString *)property
+{
+    return [property hasSuffix:@"_id"];
 }
 
 @end

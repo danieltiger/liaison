@@ -27,5 +27,7 @@ typedef void(^LiaisonEntityDescriptionBlock)(NSManagedObjectContext *localContex
 
 - (void)markPropertyAsDate:(NSString *)propertyName;
 - (NSArray *)propertiesMarkedAsDate;
+- (void)setEntityDescription:(LiaisonEntityDescription *)description forProperty:(NSString *)property;
+- (LiaisonEntityDescription *)entityDescriptionForProperty:(NSString *)property;
 
 @end

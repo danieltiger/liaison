@@ -11,10 +11,9 @@
 
 @interface LiaisonJSONProcessor (Sanitization)
 
-- (NSDictionary *)sanitizeJSONDictionary:(NSDictionary *)jsonDictionary
-                    forEntityDescription:(LiaisonEntityDescription *)entityDescription;
-- (NSDictionary *)sanitizeJSONDictionaryForJoinTable:(NSDictionary *)jsonDictionary
-                               withEntityDescription:(LiaisonEntityDescription *)entityDescription;
+- (NSDictionary *)sanitizeJSONDictionary:(NSDictionary *)dictionary
+                    forEntityDescription:(LiaisonEntityDescription *)description;
+- (NSDictionary *)sanitizeJSONDictionaryForJoinTable:(NSDictionary *)dictionary;
 - (NSString *)entityNameForProperty:(NSString *)property;
 
 @end

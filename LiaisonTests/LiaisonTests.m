@@ -59,7 +59,7 @@ static NSString *kAuthorBookRelationship = @"books";
     self.context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
     [self.context setPersistentStoreCoordinator:self.coord];
     
-    self.liaison = [[Liaison alloc] init];
+    self.liaison = [[Liaison alloc] initWithManagedObjectContext:self.context];
 }
 
 
@@ -162,7 +162,8 @@ static NSString *kAuthorBookRelationship = @"books";
 - (void)testRelationshipsSanitization
 {
     NSDictionary *fakeJSON = @{
-                               @"publisher_id": @(1),
+                               @"id": @(1),
+                               @"publisher_id": @(1)
                                };
     
     LiaisonEntityDescription *desc = [LiaisonEntityDescription descriptionForEntityName:kAuthor
@@ -213,12 +214,85 @@ static NSString *kAuthorBookRelationship = @"books";
                                                                       entityDescription:desc
                                                                               inContext:self.context];
     
-    NSDictionary *sanitizedJSON = [processor sanitizeJSONDictionaryForJoinTable:fakeJSON
-                                                          withEntityDescription:desc];
+    NSDictionary *sanitizedJSON = [processor sanitizeJSONDictionaryForJoinTable:fakeJSON];
     
     STAssertNotNil([sanitizedJSON objectForKey:@"author_id"], @"author_id should still be present, as it's a relationship.");
     STAssertNotNil([sanitizedJSON objectForKey:@"book_id"], @"book_id should still be present, as it's a relationship.");
     STAssertNil([sanitizedJSON objectForKey:@"created_at"], @"created_at should not be present, as it's not a relationship.");
+}
+
+
+#pragma mark - Liaison
+
+- (void)testProcessingOneEntity
+{
+    NSDictionary *fakeJSON = @{
+                               @"created_at": @"2013-04-17T20:58:42Z",
+                               @"id": @(1),
+                               @"name": @"Raymond Carver"
+                               };
+    
+    LiaisonEntityDescription *desc = [LiaisonEntityDescription descriptionForEntityName:kAuthor
+                                                                        andRelationship:kAuthorRelationship];
+    
+    [self.liaison processJSONPayload:fakeJSON withEntityDescription:desc completion:^{
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:desc.entityName
+                                                  inManagedObjectContext:self.context];
+        
+        [request setEntity:entity];
+        [request setPredicate:[NSPredicate predicateWithFormat:@"%K = %@", desc.primaryKey, @(1)]];
+        [request setFetchLimit:1];
+        
+        NSError *error = nil;
+        NSArray *fetchedObjects = [self.context executeFetchRequest:request error:&error];
+        if (error != nil) {
+            NSLog(@"findById: Unresolved error %@, %@", error, [error userInfo]);
+        }
+        
+        STAssertTrue(fetchedObjects.count == 1, @"There should only be one object");
+        STAssertNotNil([fetchedObjects lastObject], @"There should be a valid NSManagedObject");
+    }];
+}
+
+
+- (void)testProcessingMultipleEntities
+{
+    NSArray *fakeJSON = @[
+                          @{
+                              @"created_at": @"2013-04-17T20:58:42Z",
+                              @"id": @(1),
+                              @"name": @"Raymond Carver"
+                              },
+                          @{
+                              @"created_at": @"2013-05-17T20:58:42Z"
+                              @"id: @(2)",
+                              @"name": @"David Foster Wallace"
+                              }
+                          ];
+    
+    LiaisonEntityDescription *desc = [LiaisonEntityDescription descriptionForEntityName:kAuthor
+                                                                        andRelationship:kAuthorRelationship];
+    
+    [self.liaison processJSONPayload:fakeJSON withEntityDescription:desc completion:^{
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:desc.entityName
+                                                  inManagedObjectContext:self.context];
+        
+        [request setEntity:entity];
+        [request setPredicate:[NSPredicate predicateWithFormat:@"%K = %@", desc.primaryKey, @(1)]];
+        [request setFetchLimit:2];
+        
+        NSError *error = nil;
+        NSArray *fetchedObjects = [self.context executeFetchRequest:request error:&error];
+        if (error != nil) {
+            NSLog(@"findById: Unresolved error %@, %@", error, [error userInfo]);
+        }
+        
+        STAssertTrue(fetchedObjects.count == 2, @"There should only be two objects");
+        STAssertNotNil([fetchedObjects objectAtIndex:0], @"There should be a valid NSManagedObject for index 0.");
+        STAssertNotNil([fetchedObjects objectAtIndex:1], @"There should be a valid NSManagedObject for index 1.");
+    }];
 }
 
 @end

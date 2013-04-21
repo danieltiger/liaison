@@ -229,8 +229,7 @@
     for (NSDictionary *dictionary in payload) {
         if (![dictionary isKindOfClass:[NSDictionary class]]) continue;
         
-        NSDictionary *sanitizedDictionary = [self sanitizeJSONDictionaryForJoinTable:dictionary
-                                                               withEntityDescription:entityDescription];
+        NSDictionary *sanitizedDictionary = [self sanitizeJSONDictionaryForJoinTable:dictionary];
         
         [self processRelationshipsForJSONDictionary:sanitizedDictionary
                                             forMany:entityDescription.leftRelationshipEntityDescription
