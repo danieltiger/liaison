@@ -22,19 +22,19 @@
 + (LiaisonEntityDescription *)descriptionForEntityName:(NSString *)entityName
                                        andRelationship:(NSString *)relationshipName
 {
-    LiaisonEntityDescription *entityDescription = [[LiaisonEntityDescription alloc] init];
+    LiaisonEntityDescription *description = [[LiaisonEntityDescription alloc] init];
     
-    entityDescription.entityName = entityName;
-    entityDescription.primaryKey = [entityDescription primaryKeyForEntityName];
-    entityDescription.relationshipName = relationshipName;
-    entityDescription.isJoinTable = NO;
-    entityDescription.postProcessingBlock = ^(NSManagedObjectContext *localContext, NSSet *processObjects) {
+    description.entityName = entityName;
+    description.primaryKey = [description primaryKeyForEntityName];
+    description.relationshipName = relationshipName;
+    description.isJoinTable = NO;
+    description.postProcessingBlock = ^(NSManagedObjectContext *localContext, NSSet *processObjects) {
     };
     
-    entityDescription.dateProperties = [NSMutableArray array];
-    entityDescription.nestedEntityDescriptions = [NSMutableDictionary dictionary];
+    description.dateProperties = [NSMutableArray array];
+    description.nestedEntityDescriptions = [NSMutableDictionary dictionary];
     
-    return entityDescription;
+    return description;
 }
 
 
@@ -80,9 +80,7 @@
         }
     }
     
-    if ([key hasPrefix:@"_"]) {
-        key = [NSString stringWithFormat:@"%@", [key substringFromIndex:1]];
-    }
+    if ([key hasPrefix:@"_"]) key = [NSString stringWithFormat:@"%@", [key substringFromIndex:1]];
     
     return [NSString stringWithFormat:@"%@_id", [key lowercaseString]];
 }

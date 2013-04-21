@@ -21,14 +21,14 @@
 #pragma mark - Designated Intializer
 
 - (id)initWithJSONPayload:(id)payload
-        entityDescription:(LiaisonEntityDescription *)entityDescription
+        entityDescription:(LiaisonEntityDescription *)description
                 inContext:(NSManagedObjectContext *)context
 {
     self = [super init];
     
     if (self != nil) {
         self.payload = payload;
-        self.entityDescription = entityDescription;
+        self.entityDescription = description;
         self.context = context;
     }
     
@@ -42,25 +42,27 @@
         [self processJoinTableJSONPayload:self.payload
                     withEntityDescription:self.entityDescription
                                 inContext:self.context];
-    } else {
-        [self processJSONPayload:self.payload
-           withEntityDescription:self.entityDescription
-                       inContext:self.context];
+        
+        return;
     }
+
+    [self processJSONPayload:self.payload
+       withEntityDescription:self.entityDescription
+                   inContext:self.context];
 }
 
 
 #pragma mark - Helpers
 
-- (NSManagedObject *)findOrCreateObjectForEntityDescription:(LiaisonEntityDescription *)entityDescription
+- (NSManagedObject *)findOrCreateObjectForEntityDescription:(LiaisonEntityDescription *)description
                                         withPrimaryKeyValue:(id)primaryKeyValue
                                                   inContext:(NSManagedObjectContext *)context
 {
     if ([primaryKeyValue isKindOfClass:[NSNull class]]) return nil;
     
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:entityDescription.entityName inManagedObjectContext:context]];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"SELF.%@ == %@", entityDescription.primaryKey, primaryKeyValue]];
+    [request setEntity:[NSEntityDescription entityForName:description.entityName inManagedObjectContext:context]];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"SELF.%@ == %@", description.primaryKey, primaryKeyValue]];
     
     NSError *error = nil;
     NSArray *fetchedObjects = [context executeFetchRequest:request error:&error];
@@ -69,10 +71,10 @@
     }
     
     if (fetchedObjects.count == 0) {
-        NSManagedObject *newObject = [NSEntityDescription insertNewObjectForEntityForName:entityDescription.entityName
+        NSManagedObject *newObject = [NSEntityDescription insertNewObjectForEntityForName:description.entityName
                                                                    inManagedObjectContext:context];
         
-        [newObject setValue:primaryKeyValue forKey:entityDescription.primaryKey];
+        [newObject setValue:primaryKeyValue forKey:description.primaryKey];
         
         return newObject;
     } else if (fetchedObjects.count == 1) {
@@ -138,25 +140,25 @@
 
 - (void)processRelationshipsForObject:(NSManagedObject *)collectionObject
                    withJSONDictionary:(NSDictionary *)dictionary
-                 andEntityDescription:(LiaisonEntityDescription *)entityDescription
+                 andEntityDescription:(LiaisonEntityDescription *)description
                             inContext:(NSManagedObjectContext *)context
 {
     NSMutableSet *relationshipSet = [self relationshipObjectsForJSONDictionary:dictionary
-                                                         withEntityDescription:entityDescription
+                                                         withEntityDescription:description
                                                                      inContext:context];
     
     for (NSManagedObject *object in relationshipSet) {
         NSDictionary *relationships = [object.entity relationshipsByName];
-        NSRelationshipDescription *relationshipDescription = [relationships objectForKey:entityDescription.relationshipName];
+        NSRelationshipDescription *relationshipDescription = [relationships objectForKey:description.relationshipName];
         
         if (relationshipDescription.isToMany) {
-            NSMutableSet *relationshipObjects = [object mutableSetValueForKey:entityDescription.relationshipName];
+            NSMutableSet *relationshipObjects = [object mutableSetValueForKey:description.relationshipName];
             
             NSSet *objectsToAdd = [NSSet setWithObject:collectionObject];
             
             [relationshipObjects unionSet:objectsToAdd];
         } else {
-            [object setValue:collectionObject forKey:entityDescription.relationshipName];
+            [object setValue:collectionObject forKey:description.relationshipName];
         }
     }
 }
@@ -191,7 +193,7 @@
 
 
 - (NSArray *)processJSONPayload:(id)payload
-          withEntityDescription:(LiaisonEntityDescription *)entityDescription
+          withEntityDescription:(LiaisonEntityDescription *)description
                       inContext:(NSManagedObjectContext *)context
 {
     NSMutableArray *objects = [[NSMutableArray alloc] init];
@@ -200,11 +202,11 @@
         if (![dictionary isKindOfClass:[NSDictionary class]]) continue;
         
         NSDictionary *sanitizedDictionary = [self sanitizeJSONDictionary:dictionary
-                                                    forEntityDescription:entityDescription];
+                                                    forEntityDescription:description];
         
-        id primaryKeyValue = [sanitizedDictionary objectForKey:entityDescription.primaryKey];
+        id primaryKeyValue = [sanitizedDictionary objectForKey:description.primaryKey];
         
-        NSManagedObject *collectionObject = [self findOrCreateObjectForEntityDescription:entityDescription
+        NSManagedObject *collectionObject = [self findOrCreateObjectForEntityDescription:description
                                                                      withPrimaryKeyValue:primaryKeyValue
                                                                                inContext:context];
         if (!collectionObject) continue;
@@ -212,7 +214,7 @@
         [self processJSONDictionary:sanitizedDictionary andAssignValuesToObject:collectionObject];
         [self processRelationshipsForObject:collectionObject
                          withJSONDictionary:dictionary
-                       andEntityDescription:entityDescription
+                       andEntityDescription:description
                                   inContext:context];
         
         [objects addObject:collectionObject.objectID];
@@ -223,7 +225,7 @@
 
 
 - (void)processJoinTableJSONPayload:(id)payload
-              withEntityDescription:(LiaisonEntityDescription *)entityDescription
+              withEntityDescription:(LiaisonEntityDescription *)description
                           inContext:(NSManagedObjectContext *)context
 {
     for (NSDictionary *dictionary in payload) {
@@ -232,8 +234,8 @@
         NSDictionary *sanitizedDictionary = [self sanitizeJSONDictionaryForJoinTable:dictionary];
         
         [self processRelationshipsForJSONDictionary:sanitizedDictionary
-                                            forMany:entityDescription.leftRelationshipEntityDescription
-                                             toMany:entityDescription.rightRelationshipEntityDescription
+                                            forMany:description.leftRelationshipEntityDescription
+                                             toMany:description.rightRelationshipEntityDescription
                                           inContext:context];
     }
 }
